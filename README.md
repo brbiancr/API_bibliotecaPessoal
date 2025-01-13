@@ -21,8 +21,6 @@ Este projeto é uma API REST desenvolvida com **Java** e **Spring Boot** para ge
 - **Backend**: Java com Spring Boot
 - **Banco de Dados**: Postgres
 - **Gerenciamento de Dependências**: Maven
-- **Documentação da API**: Swagger (OpenAPI)
-- **Testes**: JUnit e Mockito
 
 ## **Rotas Principais**
 - **/livros**: Gerenciamento dos livros na biblioteca.
@@ -32,5 +30,3 @@ Este projeto é uma API REST desenvolvida com **Java** e **Spring Boot** para ge
 - **Linguagem**: Java 17+
 - **Frameworks**: Spring Boot, Spring Data JPA, Spring Web
 - **Banco de Dados**: Postgres, MySQL
-- **Testes**: JUnit 5, Mockito
-- **Documentação**: Swagger/OpenAPI
