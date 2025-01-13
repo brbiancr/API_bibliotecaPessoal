@@ -34,9 +34,3 @@ Este projeto é uma API REST desenvolvida com **Java** e **Spring Boot** para ge
 - **Banco de Dados**: Postgres, MySQL
 - **Testes**: JUnit 5, Mockito
 - **Documentação**: Swagger/OpenAPI
-
-## **Como Executar**
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/brbiancr/biblioteca-pessoal-api.git
-   cd biblioteca-pessoal-api
