@@ -1,0 +1,36 @@
+CREATE TABLE livro (
+    id UUID NOT NULL PRIMARY KEY,
+    isbn VARCHAR(20) NOT NULL UNIQUE,
+    titulo VARCHAR(150) NOT NULL,
+    autor VARCHAR(50) NOT NULL,
+    genero VARCHAR(30) NOT NULL,
+    ano_publicacao INTEGER,
+    tipo VARCHAR(30) NOT NULL,
+    status_leitura VARCHAR(30),
+    avaliacao INTEGER,
+    observacoes VARCHAR(200),
+    data_cadastro TIMESTAMP,
+    data_atualizacao TIMESTAMP,
+    CONSTRAINT chk_genero CHECK (genero IN ('ROMANCE', 'FANTASIA', 'FICCAO_CIENTIFICA', 'MISTERIO',
+                                            'TERROR', 'AVENTURA', 'THRILLER', 'DISTOPIA', 'BIOGRAFIA',
+                                            'AUTO_AJUDA', 'POESIA', 'CONTO', 'EDUCACAO')),
+    CONSTRAINT chk_tipo CHECK (tipo IN ('FISICO', 'EPUB', 'PDF')),
+    CONSTRAINT chk_status_leitura CHECK (status_leitura IN ('LIDO', 'LENDO', 'QUERO_LER')),
+    CONSTRAINT chk_avaliacao CHECK (avaliacao BETWEEN 1 AND 5)
+);
+
+CREATE TABLE lista_personalizada (
+    id UUID NOT NULL PRIMARY KEY,
+    nome VARCHAR(20) NOT NULL UNIQUE,
+    descricao VARCHAR(200),
+    data_criacao TIMESTAMP,
+    data_atualizacao TIMESTAMP
+);
+
+CREATE TABLE lista_livro (
+    lista_id UUID NOT NULL,
+    livro_id UUID NOT NULL,
+    PRIMARY KEY (lista_id, livro_id),
+    FOREIGN KEY (lista_id) REFERENCES lista_personalizada(id) ON DELETE CASCADE,
+    FOREIGN KEY (livro_id) REFERENCES livro(id) ON DELETE CASCADE
+);
