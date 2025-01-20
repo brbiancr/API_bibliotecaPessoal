@@ -1,4 +1,4 @@
-# Rodar container  Postgre na versão 16.3
+# Rodar container  Postgres na versão 16.3
 docker run --name biblioteca-db -p 5433:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=biblioteca postgres:16.3
 
 #Rodar Pgadmin 4
