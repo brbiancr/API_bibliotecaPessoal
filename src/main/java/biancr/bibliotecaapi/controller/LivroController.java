@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/livros")
 @RequiredArgsConstructor
-public class LivroController implements GenericController{
+public class LivroController implements GenericController {
 
     private final LivroService service;
     private final LivroMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Void> salvar(@RequestBody @Valid CadastroLivroDTO dto){
+    public ResponseEntity<Void> salvar(@RequestBody @Valid CadastroLivroDTO dto) {
         // Mapear dto para entidade
         Livro livro = mapper.toEntity(dto);
 
@@ -39,16 +39,16 @@ public class LivroController implements GenericController{
     }
 
     @GetMapping("/{isbn}")
-    public ResponseEntity<ResultadoPesquisaLivroDTO> obterDetalhes(@PathVariable("isbn") String isbn){
+    public ResponseEntity<ResultadoPesquisaLivroDTO> obterDetalhes(@PathVariable("isbn") String isbn) {
         return service.obterPorIsbn(isbn)
                 .map(livro -> {
-                    var dto =mapper.toDTO(livro);
+                    var dto = mapper.toDTO(livro);
                     return ResponseEntity.ok(dto);
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("{isbn}")
-    public ResponseEntity<Object> deletar(@PathVariable("isbn") String isbn){
+    public ResponseEntity<Object> deletar(@PathVariable("isbn") String isbn) {
         return service.obterPorIsbn(isbn)
                 .map(livro -> {
                     service.deletar(livro);
@@ -79,12 +79,35 @@ public class LivroController implements GenericController{
             Integer pagina,
             @RequestParam(value = "tamanho-pagina", defaultValue = "5")
             Integer tamanhoPagina
-    ){
-        Page<Livro> paginaResultado =service.pesquisar(isbn, titulo, autor, genero, anoPublicacao, tipo, statusLeitura, avaliacao, pagina, tamanhoPagina);
+    ) {
+        Page<Livro> paginaResultado = service.pesquisar(isbn, titulo, autor, genero, anoPublicacao, tipo, statusLeitura, avaliacao, pagina, tamanhoPagina);
 
-        Page<ResultadoPesquisaLivroDTO> resultado =paginaResultado.map(mapper::toDTO);
+        Page<ResultadoPesquisaLivroDTO> resultado = paginaResultado.map(mapper::toDTO);
 
         return ResponseEntity.ok(resultado);
     }
 
+    @PutMapping("{isbn}")
+public ResponseEntity<Object> atualizar(@PathVariable("isbn") String isbn, @RequestBody @Valid CadastroLivroDTO dto){
+        return service.obterPorIsbn(isbn)
+                .map(livro -> {
+                    Livro entidade = mapper.toEntity(dto);
+
+                    livro.setIsbn(entidade.getIsbn());
+                    livro.setAutor(entidade.getAutor());
+                    livro.setTitulo(entidade.getTitulo());
+                    livro.setTipo(entidade.getTipo());
+                    livro.setGenero(entidade.getGenero());
+                    livro.setStatusLeitura(entidade.getStatusLeitura());
+                    livro.setAnoPublicacao(entidade.getAnoPublicacao());
+
+                    try {
+                        service.atualizar(livro);
+                    } catch(IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    return ResponseEntity.noContent().build();
+                }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }
