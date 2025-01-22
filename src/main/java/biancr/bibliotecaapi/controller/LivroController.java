@@ -46,4 +46,13 @@ public class LivroController implements GenericController{
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @DeleteMapping("{isbn}")
+    public ResponseEntity<Object> deletar(@PathVariable("isbn") String isbn){
+        return service.obterPorIsbn(isbn)
+                .map(livro -> {
+                    service.deletar(livro);
+                    return ResponseEntity.noContent().build();
+                }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }

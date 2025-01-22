@@ -23,4 +23,8 @@ public class LivroService {
     public Optional<Livro> obterPorIsbn(String isbn){
         return repository.findByIsbn(isbn);
     }
+
+    public void deletar(Livro livro) {
+        repository.delete(livro);
+    }
 }
