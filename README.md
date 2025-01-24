@@ -11,11 +11,6 @@ Este projeto é uma API REST desenvolvida com **Java** e **Spring Boot** para ge
 - **Listas Personalizadas**:
   - Criar listas temáticas (ex.: "Favoritos", "Clássicos da Literatura").
   - Adicionar ou remover livros das listas.
-- **Estatísticas**:
-  - Visualizar estatísticas como a quantidade de livros lidos, em leitura ou desejados.
-  - Contagem de livros físicos e digitais.
-- **Histórico de Atualizações**:
-  - Rastrear mudanças no status de leitura.
 
 ## **Estrutura do Projeto**
 - **Backend**: Java com Spring Boot
