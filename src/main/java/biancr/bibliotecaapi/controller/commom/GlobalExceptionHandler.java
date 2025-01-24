@@ -3,6 +3,7 @@ package biancr.bibliotecaapi.controller.commom;
 import biancr.bibliotecaapi.controller.dto.ErroCampo;
 import biancr.bibliotecaapi.controller.dto.ErroResposta;
 import biancr.bibliotecaapi.exceptions.CampoInvalidoException;
+import biancr.bibliotecaapi.exceptions.EntidadeNaoEncontradaException;
 import biancr.bibliotecaapi.exceptions.RegistroDuplicadoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -44,6 +45,12 @@ public class GlobalExceptionHandler {
         return new ErroResposta(HttpStatus.UNPROCESSABLE_ENTITY.value(),
                 "Erro de validação",
                 List.of(new ErroCampo(e.getCampo(), e.getMessage())));
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ErroResposta handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e){
+        return ErroResposta.respostaPadrao(e.getMessage());
     }
 
     @ExceptionHandler(RuntimeException.class)

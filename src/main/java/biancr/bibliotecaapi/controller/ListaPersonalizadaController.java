@@ -2,6 +2,7 @@ package biancr.bibliotecaapi.controller;
 
 import biancr.bibliotecaapi.controller.dto.ListaPersonalizadaDTO;
 import biancr.bibliotecaapi.controller.mapper.ListaPersonalisadaMapper;
+import biancr.bibliotecaapi.exceptions.EntidadeNaoEncontradaException;
 import biancr.bibliotecaapi.model.ListaPersonalizada;
 import biancr.bibliotecaapi.service.ListaPersonalizadaService;
 import jakarta.validation.Valid;
@@ -39,7 +40,6 @@ public class ListaPersonalizadaController implements GenericController{
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Atualizar lista
     @PutMapping("{id}")
     public ResponseEntity<Object> atualizar(@PathVariable("id") String id, @RequestBody @Valid ListaPersonalizadaDTO dto) throws IllegalAccessException{
         return service.obterPorId(UUID.fromString(id))
@@ -73,6 +73,20 @@ public class ListaPersonalizadaController implements GenericController{
 
                     return ResponseEntity.noContent().build();
                 }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Adicionar um livro a uma lista
+    @PostMapping("{id}/livros")
+    public ResponseEntity<Object> adicionarLivro(@PathVariable("id") String id, @RequestParam String isbn){
+        try{
+            service.adicionarLivro(id, isbn);
+            return ResponseEntity.noContent().build();
+        } catch(EntidadeNaoEncontradaException e){
+            return ResponseEntity.notFound().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     // Obter detalhes

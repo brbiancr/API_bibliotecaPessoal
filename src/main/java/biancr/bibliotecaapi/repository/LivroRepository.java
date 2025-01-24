@@ -11,5 +11,4 @@ public interface LivroRepository extends JpaRepository<Livro, UUID>, JpaSpecific
 
     Optional<Livro> findByIsbn(String isbn);
 
-
 }

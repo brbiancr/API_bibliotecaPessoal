@@ -1,7 +1,11 @@
 package biancr.bibliotecaapi.service;
 
+import biancr.bibliotecaapi.exceptions.EntidadeNaoEncontradaException;
+import biancr.bibliotecaapi.exceptions.RegistroDuplicadoException;
 import biancr.bibliotecaapi.model.ListaPersonalizada;
+import biancr.bibliotecaapi.model.Livro;
 import biancr.bibliotecaapi.repository.ListaPersonalizadaRepository;
+import biancr.bibliotecaapi.repository.LivroRepository;
 import biancr.bibliotecaapi.validator.ListaPersonalizadaValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,7 @@ public class ListaPersonalizadaService {
 
     private final ListaPersonalizadaRepository repository;
     private final ListaPersonalizadaValidator validator;
+    private final LivroRepository livroRepository;
 
     public ListaPersonalizada salvar(ListaPersonalizada lista){
         validator.validar(lista);
@@ -34,6 +39,20 @@ public class ListaPersonalizadaService {
             throw new IllegalAccessException("Para atualizar é necessário que a lista já esteja na base de dados");
 
         validator.validar(listaPersonalizada);
+        repository.save(listaPersonalizada);
+    }
+
+    public void adicionarLivro(String id, String isbn){
+        ListaPersonalizada listaPersonalizada = repository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Lista não encontrada."));
+
+        Livro livro = livroRepository.findByIsbn(isbn)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Livro não encontrado."));
+
+        if(listaPersonalizada.getLivros().contains(livro))
+            throw new RegistroDuplicadoException("Livro já adicionado a lista.");
+
+        listaPersonalizada.getLivros().add(livro);
         repository.save(listaPersonalizada);
     }
 
