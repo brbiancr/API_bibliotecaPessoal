@@ -36,4 +36,5 @@ public class ListaPersonalizadaService {
         validator.validar(listaPersonalizada);
         repository.save(listaPersonalizada);
     }
+
 }

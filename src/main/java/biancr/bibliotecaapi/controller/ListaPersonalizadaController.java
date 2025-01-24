@@ -59,5 +59,21 @@ public class ListaPersonalizadaController implements GenericController{
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PatchMapping("{id}/nome")
+    public ResponseEntity<Object> atualizarNome(@PathVariable("id") String id, @RequestParam("nome") String nome) throws IllegalAccessException{
+        return service.obterPorId(UUID.fromString(id))
+                .map(listaPersonalizada -> {
+                    listaPersonalizada.setNome(nome);
+
+                    try{
+                        service.atualizar(listaPersonalizada);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    return ResponseEntity.noContent().build();
+                }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     // Obter detalhes
 }
