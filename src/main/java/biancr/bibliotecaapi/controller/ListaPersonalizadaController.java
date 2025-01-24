@@ -30,7 +30,6 @@ public class ListaPersonalizadaController implements GenericController{
         return ResponseEntity.created(url).build();
     }
 
-    // Deletar lista
     @DeleteMapping("{id}")
     public ResponseEntity<Object> deletar(@PathVariable("id") String id){
         return service.obterPorId(UUID.fromString(id))
@@ -41,6 +40,24 @@ public class ListaPersonalizadaController implements GenericController{
     }
 
     // Atualizar lista
+    @PutMapping("{id}")
+    public ResponseEntity<Object> atualizar(@PathVariable("id") String id, @RequestBody @Valid ListaPersonalizadaDTO dto) throws IllegalAccessException{
+        return service.obterPorId(UUID.fromString(id))
+                .map(listaPersonalizada -> {
+                    ListaPersonalizada listaEntidade = mapper.toEntity(dto);
+
+                    listaPersonalizada.setNome(listaEntidade.getNome());
+                    listaPersonalizada.setDescricao(listaEntidade.getDescricao());
+
+                    try{
+                        service.atualizar(listaPersonalizada);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    return ResponseEntity.noContent().build();
+                }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     // Obter detalhes
 }

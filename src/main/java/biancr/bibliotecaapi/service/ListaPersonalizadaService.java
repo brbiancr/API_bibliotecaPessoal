@@ -28,4 +28,12 @@ public class ListaPersonalizadaService {
     public void deletar(ListaPersonalizada listaPersonalizada) {
         repository.delete(listaPersonalizada);
     }
+
+    public void atualizar(ListaPersonalizada listaPersonalizada) throws IllegalAccessException{
+        if(listaPersonalizada.getId() == null)
+            throw new IllegalAccessException("Para atualizar é necessário que a lista já esteja na base de dados");
+
+        validator.validar(listaPersonalizada);
+        repository.save(listaPersonalizada);
+    }
 }
