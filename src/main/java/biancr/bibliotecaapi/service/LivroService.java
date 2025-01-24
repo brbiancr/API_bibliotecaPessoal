@@ -90,4 +90,22 @@ public class LivroService {
         validator.validar(livro);
         repository.save(livro);
     }
+
+    public void atualizarAvaliacao(Livro livro) throws IllegalAccessException{
+        if(livro.getId() == null){
+            throw new IllegalAccessException("Para avaliar é necessário que o livro já esteja salvo na base de dados");
+        }
+
+        validator.validarAvaliacao(livro);
+        repository.save(livro);
+    }
+
+    public void atualizarStatusLeitura(Livro livro) throws IllegalAccessException{
+        if(livro.getId() == null){
+            throw new IllegalAccessException("Para atualizar o status de leitura é necessário que o livro já esteja salvo na base de dados");
+        }
+
+        validator.validarStatusLeitura(livro);
+        repository.save(livro);
+    }
 }

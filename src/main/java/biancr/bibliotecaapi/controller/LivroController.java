@@ -8,7 +8,6 @@ import biancr.bibliotecaapi.model.Livro;
 import biancr.bibliotecaapi.model.Status;
 import biancr.bibliotecaapi.model.Tipo;
 import biancr.bibliotecaapi.service.LivroService;
-import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -87,8 +86,9 @@ public class LivroController implements GenericController {
         return ResponseEntity.ok(resultado);
     }
 
-    @PutMapping("{isbn}")
-public ResponseEntity<Object> atualizar(@PathVariable("isbn") String isbn, @RequestBody @Valid CadastroLivroDTO dto){
+
+    @PutMapping("{isbn}/atualizar")
+    public ResponseEntity<Object> atualizar(@PathVariable("isbn") String isbn, @RequestBody @Valid CadastroLivroDTO dto){
         return service.obterPorIsbn(isbn)
                 .map(livro -> {
                     Livro entidade = mapper.toEntity(dto);
@@ -110,4 +110,37 @@ public ResponseEntity<Object> atualizar(@PathVariable("isbn") String isbn, @Requ
                     return ResponseEntity.noContent().build();
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @PutMapping("{isbn}/avaliar")
+    public ResponseEntity<Object> avaliarLivro(@PathVariable("isbn") String isbn, @RequestParam("avaliacao") Integer avaliacao ){
+        return service.obterPorIsbn(isbn)
+                .map(livro -> {
+                    livro.setAvaliacao(avaliacao);
+
+                    try {
+                        service.atualizarAvaliacao(livro);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    return ResponseEntity.noContent().build();
+                }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("{isbn}/status")
+    public ResponseEntity<Object> atualizarStatusLeitura(@PathVariable("isbn") String isbn, @RequestParam("statusLeitura") Status statusLeitura ){
+        return service.obterPorIsbn(isbn)
+                .map(livro -> {
+                    livro.setStatusLeitura(statusLeitura);
+
+                    try {
+                        service.atualizarStatusLeitura(livro);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    return ResponseEntity.noContent().build();
+                }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }
