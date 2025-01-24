@@ -56,4 +56,15 @@ public class ListaPersonalizadaService {
         repository.save(listaPersonalizada);
     }
 
+    public void removerLivro(String id, String isbn){
+        ListaPersonalizada listaPersonalizada = repository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Lista não encontrada."));
+
+        Livro livro = livroRepository.findByIsbn(isbn)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Livro não encontrado."));
+
+        listaPersonalizada.getLivros().remove(livro);
+        repository.save(listaPersonalizada);
+    }
+
 }

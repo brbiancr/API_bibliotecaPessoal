@@ -8,6 +8,7 @@ import biancr.bibliotecaapi.service.ListaPersonalizadaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -75,13 +76,24 @@ public class ListaPersonalizadaController implements GenericController{
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Adicionar um livro a uma lista
     @PostMapping("{id}/livros")
     public ResponseEntity<Object> adicionarLivro(@PathVariable("id") String id, @RequestParam String isbn){
         try{
             service.adicionarLivro(id, isbn);
             return ResponseEntity.noContent().build();
         } catch(EntidadeNaoEncontradaException e){
+            return ResponseEntity.notFound().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("{id}/livros")
+    public ResponseEntity<Object> removerLivro(@PathVariable("id") String id, @RequestParam String isbn){
+        try{
+            service.removerLivro(id, isbn);
+            return ResponseEntity.noContent().build();
+        } catch (EntidadeNaoEncontradaException e){
             return ResponseEntity.notFound().build();
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
