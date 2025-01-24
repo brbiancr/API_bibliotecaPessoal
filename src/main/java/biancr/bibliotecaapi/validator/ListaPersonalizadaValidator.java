@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class ListaPersonalisadaValidator {
+public class ListaPersonalizadaValidator {
 
     private final ListaPersonalizadaRepository repository;
 
