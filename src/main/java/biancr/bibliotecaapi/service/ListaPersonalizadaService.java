@@ -10,6 +10,8 @@ import biancr.bibliotecaapi.repository.LivroRepository;
 import biancr.bibliotecaapi.validator.ListaPersonalizadaValidator;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +34,11 @@ public class ListaPersonalizadaService {
 
     public Optional<ListaPersonalizada> obterPorId(UUID id){
         return repository.findById(id);
+    }
+
+    public Optional<ListaPersonalizada> obterPorNome(String nome){
+
+        return repository.findByNome(nome);
     }
 
     public void deletar(ListaPersonalizada listaPersonalizada) {

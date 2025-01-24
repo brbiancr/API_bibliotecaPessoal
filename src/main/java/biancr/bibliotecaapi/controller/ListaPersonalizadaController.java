@@ -8,11 +8,14 @@ import biancr.bibliotecaapi.service.ListaPersonalizadaService;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -109,5 +112,11 @@ public class ListaPersonalizadaController implements GenericController{
         return ResponseEntity.ok(listas);
     }
 
-    // Obter detalhes
+    @GetMapping("{nome}")
+    public ResponseEntity<ListaPersonalizada> buscar(@PathVariable("nome") String nome){
+        return service.obterPorNome(nome)
+                .map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
+
+    }
 }
