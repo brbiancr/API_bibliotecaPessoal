@@ -2,7 +2,7 @@ package biancr.bibliotecaapi.validator;
 
 import biancr.bibliotecaapi.exceptions.RegistroDuplicadoException;
 import biancr.bibliotecaapi.model.ListaPersonalizada;
-import biancr.bibliotecaapi.repository.ListaRepository;
+import biancr.bibliotecaapi.repository.ListaPersonalizadaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,9 +10,9 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class ListaValidator {
+public class ListaPersonalisadaValidator {
 
-    private final ListaRepository repository;
+    private final ListaPersonalizadaRepository repository;
 
     public void validar(ListaPersonalizada lista){
         if(existeListaComNome(lista))

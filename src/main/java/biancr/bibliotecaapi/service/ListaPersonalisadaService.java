@@ -1,17 +1,17 @@
 package biancr.bibliotecaapi.service;
 
 import biancr.bibliotecaapi.model.ListaPersonalizada;
-import biancr.bibliotecaapi.repository.ListaRepository;
-import biancr.bibliotecaapi.validator.ListaValidator;
+import biancr.bibliotecaapi.repository.ListaPersonalizadaRepository;
+import biancr.bibliotecaapi.validator.ListaPersonalisadaValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ListaService {
+public class ListaPersonalisadaService {
 
-    private final ListaRepository repository;
-    private final ListaValidator validator;
+    private final ListaPersonalizadaRepository repository;
+    private final ListaPersonalisadaValidator validator;
 
     public ListaPersonalizada salvar(ListaPersonalizada lista){
         validator.validar(lista);

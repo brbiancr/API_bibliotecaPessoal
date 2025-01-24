@@ -7,10 +7,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface LivroMapper {
+public abstract class LivroMapper {
 
-    Livro toEntity(CadastroLivroDTO dto);
+    public abstract Livro toEntity(CadastroLivroDTO dto);
 
-    ResultadoPesquisaLivroDTO toDTO(Livro livro);
+    public abstract ResultadoPesquisaLivroDTO toDTO(Livro livro);
 
 }
