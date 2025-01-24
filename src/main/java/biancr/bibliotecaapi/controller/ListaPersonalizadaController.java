@@ -6,11 +6,13 @@ import biancr.bibliotecaapi.exceptions.EntidadeNaoEncontradaException;
 import biancr.bibliotecaapi.model.ListaPersonalizada;
 import biancr.bibliotecaapi.service.ListaPersonalizadaService;
 import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -99,6 +101,12 @@ public class ListaPersonalizadaController implements GenericController{
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ListaPersonalizadaDTO>> listarTodas(){
+        List<ListaPersonalizadaDTO> listas = service.listarTodas();
+        return ResponseEntity.ok(listas);
     }
 
     // Obter detalhes

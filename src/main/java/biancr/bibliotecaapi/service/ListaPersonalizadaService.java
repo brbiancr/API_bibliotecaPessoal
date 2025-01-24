@@ -1,5 +1,6 @@
 package biancr.bibliotecaapi.service;
 
+import biancr.bibliotecaapi.controller.dto.ListaPersonalizadaDTO;
 import biancr.bibliotecaapi.exceptions.EntidadeNaoEncontradaException;
 import biancr.bibliotecaapi.exceptions.RegistroDuplicadoException;
 import biancr.bibliotecaapi.model.ListaPersonalizada;
@@ -8,10 +9,13 @@ import biancr.bibliotecaapi.repository.ListaPersonalizadaRepository;
 import biancr.bibliotecaapi.repository.LivroRepository;
 import biancr.bibliotecaapi.validator.ListaPersonalizadaValidator;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,6 +69,15 @@ public class ListaPersonalizadaService {
 
         listaPersonalizada.getLivros().remove(livro);
         repository.save(listaPersonalizada);
+    }
+
+    public List<ListaPersonalizadaDTO> listarTodas(){
+        List<ListaPersonalizada> listas = repository.findAll();
+
+        return listas.stream()
+                .map(lista ->
+                        new ListaPersonalizadaDTO(lista.getNome(), lista.getDescricao())
+                ).collect(Collectors.toList());
     }
 
 }
